@@ -7,8 +7,14 @@ import (
 	"strings"
 )
 
+var url = "https://pokeapi.co/api/v2/location-area?offset=0&limit=20"
+
 func startRepl() {
     reader := bufio.NewScanner(os.Stdin)
+    var c config = config{
+	next: &url,
+	prev: nil,
+    }
     for {
         fmt.Printf("pokedex > ")
         reader.Scan()
@@ -21,7 +27,7 @@ func startRepl() {
 	commandName := words[0]
 	cmd, exist := getCommands()[commandName]
 	if exist {
-	    if err := cmd.callback(); err != nil {
+	    if err := cmd.callback(&c); err != nil {
 		fmt.Println(err)
 	    }
 	} else {
@@ -36,10 +42,15 @@ func cleanInput(text string) []string {
     return words 
 }
 
+type config struct {
+    next *string
+    prev *string
+}
+
 type cliCommand struct {
     name string
     desc string
-    callback func() error
+    callback func(c *config) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -53,6 +64,16 @@ func getCommands() map[string]cliCommand {
 	    name: "exit",
 	    desc: "Exit the Pokedex",
 	    callback: exitCommand,
+	},
+	"map" : {
+	    name: "map",
+	    desc: "Get the next page of locations",
+	    callback: mapCommand,
+	},
+	"mapb" : {
+	    name: "mapb",
+	    desc: "Get the previous page of locations",
+	    callback: mapbCommand,
 	},
     }
 }

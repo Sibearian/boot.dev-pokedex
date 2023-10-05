@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func helpCommand() error {
+func helpCommand(c *config) error {
     commands := getCommands()
 
     fmt.Println()
