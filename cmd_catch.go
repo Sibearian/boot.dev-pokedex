@@ -7,7 +7,6 @@ import (
 	pokedexclient "pokedex/pokedex_client"
 )
 
-var pokemons = map[string]pokedexclient.Pokemon{}
 
 func catchCommand(c *config, parameters []string) error {
     if len(parameters) != 1 {

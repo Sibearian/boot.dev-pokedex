@@ -4,10 +4,13 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	pokedexclient "pokedex/pokedex_client"
 	"strings"
 )
 
 var url = "https://pokeapi.co/api/v2/location-area?offset=0&limit=20"
+
+var pokemons = map[string]pokedexclient.Pokemon{}
 
 func startRepl() {
     reader := bufio.NewScanner(os.Stdin)
@@ -89,6 +92,11 @@ func getCommands() map[string]cliCommand {
 	    name: "inspect",
 	    desc: "Check info of a captured pokemon",
 	    callback: inspectCommand,
+	},
+	"pokedex" : {
+	    name: "pokedex",
+	    desc: "List all caught pokemon",
+	    callback: pokedexCommand,
 	},
     }
 }
