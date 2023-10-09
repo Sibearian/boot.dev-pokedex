@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type pokemonResponse struct {
+type pokemonsResponse struct {
     PokemonEncounters []struct {
 	Pokemon struct {
 	    Name string `json:"name"`
@@ -16,14 +16,14 @@ type pokemonResponse struct {
     } `json:"pokemon_encounters"`
 }
 
-var pokemonCache = cache.NewCache(time.Minute)
-const baseUrl = "https://pokeapi.co/api/v2/location-area/"
+var pokemonsCache = cache.NewCache(time.Minute)
+const baseUrlPokemons = "https://pokeapi.co/api/v2/location-area/"
 
 func GetPokemons(location string) ([]string, error) {
-    url := baseUrl + location
+    url := baseUrlPokemons + location
     var err error
 
-    data, exist := pokemonCache.Get(location)
+    data, exist := pokemonsCache.Get(location)
     if !exist {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -35,10 +35,10 @@ func GetPokemons(location string) ([]string, error) {
 	    return nil, err
 	}
 
-	pokemonCache.Add(location, data)
+	pokemonsCache.Add(location, data)
     }
 
-    var r = pokemonResponse{}
+    var r = pokemonsResponse{}
     err = json.Unmarshal(data, &r)
     if err != nil {
 	return nil, err
