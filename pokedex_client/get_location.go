@@ -8,7 +8,7 @@ import (
 	"time"
 )
 	
-type respose struct {
+type locationResponse struct {
     Count    int    `json:"count"`
     Next     *string	`json:"next"`
     Previous *string    `json:"previous"`
@@ -18,10 +18,10 @@ type respose struct {
     } `json:"results"`
 }
 
-var c = cache.NewCache(time.Minute)
+var locationCache = cache.NewCache(time.Minute)
 
-func Get_locations(url string) (next, prev *string, locations []string, err error) {
-    data, exist := c.Get(url)
+func GetLocations(url string) (next, prev *string, locations []string, err error) {
+    data, exist := locationCache.Get(url)
 
     if !exist {
 	resp, error := http.Get(url)
@@ -34,10 +34,10 @@ func Get_locations(url string) (next, prev *string, locations []string, err erro
 	    return nil, nil, nil, error
 	}
 
-	c.Add(url, data)
+	locationCache.Add(url, data)
     }
 
-    var r = respose{}
+    var r = locationResponse{}
     err = json.Unmarshal(data, &r)
     if err != nil {
 	return

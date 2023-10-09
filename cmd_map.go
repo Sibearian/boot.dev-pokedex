@@ -6,12 +6,12 @@ import (
 	pokedexclient "pokedex/pokedex_client"
 )
 
-func mapCommand(c *config) error {
+func mapCommand(c *config, p []string) error {
     if c.next == nil {
 	return errors.New("You are on the last page.")
     }
 
-    next, prev, locations, err := pokedexclient.Get_locations(*c.next)
+    next, prev, locations, err := pokedexclient.GetLocations(*c.next)
     if err != nil {
 	return err
     }
@@ -26,12 +26,12 @@ func mapCommand(c *config) error {
     return nil
 }
 
-func mapbCommand(c *config) error {
+func mapbCommand(c *config, p []string) error {
     if c.prev == nil {
 	return errors.New("You are on the first page.")
     }
 
-    next, prev, locations, err := pokedexclient.Get_locations(*c.prev)
+    next, prev, locations, err := pokedexclient.GetLocations(*c.prev)
     if err != nil {
 	return err
     }

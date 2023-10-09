@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
+    "fmt"
 )
 
-func helpCommand(c *config) error {
+func helpCommand(c *config, p []string) error {
     commands := getCommands()
 
     fmt.Println()
